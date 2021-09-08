@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>debug page</title>
+    <style>
+        h2 {
+            background-color: azure;
+        }
+        .result_example {
+            border-left: 5px solid blue;
+            margin-left: 2em;
+        }
+        .result_example p {
+            border-bottom: 1px solid darkblue;
+        }
+        .result_example img{
+            margin-left: 5px;
+            border: 1px solid #000000;
+        }
+        .example {
+            margin-left: 1em;
+            border-left: 5px solid green;
+        }
+    </style>
+</head>
+<body>
+    デバッグ用ページ。<br>
+    <br>
+    <br>
+    <p>
+        buttonを押すと、それぞれに対応したURLにアクセスし、結果をconsoleに出力します。<br>
+
+    </p>
+    <br>
+    <br>
+
+    <h2>Example1 GET</h2>
+    <div class="example">
+        <h3>GET</h3>
+        <button id="example1_get" onclick="example1_get()">button example1 GET</button><br><br>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_get.png') }}">
+
+        </div>
+
+    </div>
+    <h2>Example1 POST</h2>
+    <div class="example">
+        <h3>POST(bodyなし)</h3>
+        <button id="example1_post" onclick="example1_post1()">button example1 POST body無し</button><br>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_post_1.png') }}">
+
+        </div>
+    </div>
+    <div class="example">
+        <h3>POST(想定通りのbody)</h3>
+        <button id="example1_post" onclick="example1_post2()">button example1 POST body({'line': 'line'})</button><br>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_post_2.png') }}">
+
+        </div>
+    </div>
+    <div class="example">
+        <h3>POST(想定していないbody)</h3>
+        <button id="example1_post" onclick="example1_post3()">button example1 POST body({'aaa': 'aaa'})</button>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_post_3.png') }}">
+
+        </div>
+    </div>
+    <h2>Example1 PUT</h2>
+    <div class="example">
+        <h3>PUT</h3>
+        <button id="example1_put" onclick="example1_put()">button example1 PUT</button>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_put.png') }}">
+
+        </div>
+    </div>
+    <h2>Example1 DELETE</h2>
+    <div class="example">
+        <button id="example1_delete" onclick="example1_delete()">button example1 DELETE</button>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example1_delete.png') }}">
+
+        </div>
+    </div>
+    <h2>Example2 GET</h2>
+    <div class="example">
+        <h3>GET</h3>
+        <button id="example2_get" onclick="example2_get()">button example2 GET</button>
+        <div class="result_example">
+            <p>出力例(Chrome DevTools の Console の出力)</p>
+            <img src="{{ url_for('static', filename='images/example2_get.png') }}">
+            <p>出力例(pythonのprint出力)</p>
+            <img src="{{ url_for('static', filename='images/example2_get_print.png') }}">
+
+        </div>
+    </div>
+
+<script type="text/javascript">
+    function example1_get(){
+        fetch('{{ url_for('example1') }}')
+        .then(response => response.json())
+        .then(data => console.log(data));
+    }
+    function example1_post1(){
+        fetch('{{ url_for('example1') }}',{
+            method: 'POST',
+            cache: 'no-cache',
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+    function example1_post2(){
+        fetch('{{ url_for('example1') }}',{
+            method: 'POST',
+            cache: 'no-cache',
+            body: JSON.stringify({'line': 'line'})
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+    function example1_post3(){
+        fetch('{{ url_for('example1') }}',{
+            method: 'POST',
+            cache: 'no-cache',
+            body: JSON.stringify({'aaa': 'aaa'})
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+    function example1_put(){
+        fetch('{{ url_for('example1') }}', {
+            method: 'PUT'
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+    function example1_delete(){
+        fetch('{{ url_for('example1') }}', {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+    function example2_get(){
+        fetch('{{ url_for('example2', name='my name') }}')
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+    }
+</script>
+
+</body>
+</html>
